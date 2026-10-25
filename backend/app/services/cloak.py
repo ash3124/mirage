@@ -32,9 +32,9 @@ ProgressCallback = Callable[[str, int], None]
 TARGET_PATH = BACKEND_ROOT / "assets" / "target.png"
 FACE_MASK_BLUR_SIGMA_PX = 12
 PRESETS = {
-    "light": (6, 40),
-    "standard": (12, 80),
-    "strong": (16, 120),
+    "light": (4, 40),
+    "standard": (8, 80),
+    "strong": (12, 120),
 }
 
 

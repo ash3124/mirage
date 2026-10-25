@@ -1,56 +1,52 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, getAdapter } from '../api';
+import { demoApi } from '../api/demoApi';
 import { friendlyErrorMessage } from '../api/errorMessages';
 import type { DemoSample, SimResult } from '../api/types';
 import DemoSamplePicker from '../components/DemoSamplePicker';
-import { links } from '../data/links';
 
 function DemoProof({ sample }: { sample: DemoSample | null }) {
   const simulation: SimResult | undefined = sample?.sims.background_snow;
+  const originalImage = simulation
+    ? api.absoluteUrl(simulation.edit_on_original_url)
+    : demoApi.absoluteUrl('/demo/hero-original.png');
+  const protectedImage = simulation
+    ? api.absoluteUrl(simulation.edit_on_cloaked_url)
+    : demoApi.absoluteUrl('/demo/hero-protected.png');
 
   return (
-    <section aria-label="Demo comparison: same AI edit on original and protected photos">
+    <section aria-label="Mirage protection and AI edit comparison">
       <div className="grid gap-4 sm:grid-cols-2">
         <figure>
           <div className="rounded bg-lavender p-2.5">
-            {simulation ? (
-              <img
-                alt="Pre-computed AI edit of an original photo"
-                className="aspect-[4/3] w-full object-contain"
-                src={api.absoluteUrl(simulation.edit_on_original_url)}
-              />
-            ) : (
-              <div className="flex aspect-[4/3] items-center justify-center bg-white px-4 text-center text-sm text-muted">
-                Demo image will appear when demo assets are available.
-              </div>
-            )}
+            <img
+              alt={simulation ? 'Pre-computed AI edit of an original photo' : 'Portrait before protection'}
+              className="aspect-[4/3] w-full object-contain"
+              src={originalImage}
+            />
           </div>
           <figcaption className="mt-2 text-xs font-semibold uppercase tracking-wide text-exposed">
-            AI edit of a normal photo
+            {'AI edit of a normal photo'}
           </figcaption>
         </figure>
         <figure>
           <div className="rounded bg-lavender p-2.5">
-            {simulation ? (
-              <img
-                alt="Pre-computed AI edit of a Mirage-protected photo"
-                className="aspect-[4/3] w-full object-contain"
-                src={api.absoluteUrl(simulation.edit_on_cloaked_url)}
-              />
-            ) : (
-              <div className="flex aspect-[4/3] items-center justify-center bg-white px-4 text-center text-sm text-muted">
-                Demo image will appear when demo assets are available.
-              </div>
-            )}
+            <img
+              alt={simulation ? 'Pre-computed AI edit of a Mirage-protected photo' : 'Portrait with Mirage protection'}
+              className="aspect-[4/3] w-full object-contain"
+              src={protectedImage}
+            />
           </div>
           <figcaption className="mt-2 text-xs font-semibold uppercase tracking-wide text-protected">
-            AI edit of a Mirage photo
+            {'AI edit of a Mirage photo'}
           </figcaption>
         </figure>
       </div>
       <p className="mt-4 text-center font-serif text-xl italic">
-        Same AI. Same prompt. Same seed.
+        {simulation
+          ? 'Same AI. Same prompt. Same seed.'
+          : 'Protect before you post.'}
       </p>
     </section>
   );
@@ -67,13 +63,9 @@ export default function Landing() {
     setSamples([]);
     setSelectedSample(null);
     setSamplesError(null);
-    if (adapter !== 'demo') {
-      setSamplesLoading(false);
-      return;
-    }
     let active = true;
     setSamplesLoading(true);
-    void api.demoSamples().then(
+    void demoApi.demoSamples().then(
       (items) => {
         if (!active) return;
         setSamples(items);
@@ -90,13 +82,7 @@ export default function Landing() {
     return () => {
       active = false;
     };
-  }, [adapter]);
-
-  const secondaryLinks = [
-    { label: 'Watch demo video', href: links.demoVideo },
-    { label: 'GitHub', href: links.github },
-    { label: 'Open in Colab', href: links.colab },
-  ].filter((item): item is { label: string; href: string } => Boolean(item.href));
+  }, []);
 
   return (
     <main>
@@ -120,25 +106,6 @@ export default function Landing() {
           <p className="mt-8 border-t border-lavender pt-4 text-sm text-muted">
             No account · Nothing stored · Deleted in 15 minutes
           </p>
-          {secondaryLinks.length > 0 ? (
-            <nav aria-label="Project links" className="mt-6 flex flex-wrap gap-x-5 gap-y-3">
-              {secondaryLinks.map((item) => (
-                <a
-                  className="text-link text-sm"
-                  href={item.href}
-                  key={item.label}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  {item.label}
-                </a>
-              ))}
-            </nav>
-          ) : (
-            <p className="mt-6 text-sm text-muted">
-              Demo video, GitHub, and Colab links will appear here when configured.
-            </p>
-          )}
         </section>
 
         <section aria-label="Example of the same AI edit on original and protected photos">

@@ -1,8 +1,2 @@
-# Replace these example handles with the teammates' GitHub usernames.
-/frontend/            @dev1-handle
-/scripts/             @dev1-handle
-/backend/             @dev2-handle
-/notebooks/           @dev2-handle
-/demo-assets/         @dev2-handle
-/API.md               @dev1-handle @dev2-handle
-/shared/              @dev1-handle @dev2-handle
+# Repository owner. Add collaborators here when they have write access.
+* @ash3124

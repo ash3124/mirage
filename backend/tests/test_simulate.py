@@ -9,7 +9,14 @@ from PIL import Image
 
 from app.errors import ApiError
 from app.schemas import SimPreset
-from app.services.simulate import SIM_PROMPTS, process_simulation
+from app.services.simulate import (
+    SIM_GUIDANCE_SCALE,
+    SIM_INFERENCE_STEPS,
+    SIM_NEGATIVE_PROMPT,
+    SIM_PROMPTS,
+    SIM_STRENGTH,
+    process_simulation,
+)
 
 
 class FakePipeline:
@@ -62,7 +69,14 @@ class SimulateTests(unittest.TestCase):
                     )
                     for call in pipeline.calls
                 ],
-                [(0.6, 7.5, 25), (0.6, 7.5, 25)],
+                [
+                    (SIM_STRENGTH, SIM_GUIDANCE_SCALE, SIM_INFERENCE_STEPS),
+                    (SIM_STRENGTH, SIM_GUIDANCE_SCALE, SIM_INFERENCE_STEPS),
+                ],
+            )
+            self.assertEqual(
+                [call["negative_prompt"] for call in pipeline.calls],
+                [SIM_NEGATIVE_PROMPT, SIM_NEGATIVE_PROMPT],
             )
             self.assertEqual(generator_factory.call_count, 2)
             for generator_call in generator_factory.return_value.manual_seed.call_args_list:

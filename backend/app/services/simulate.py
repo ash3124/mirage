@@ -17,12 +17,37 @@ from .utils import load_rgb_image
 
 ProgressCallback = Callable[[str, int], None]
 SIM_PROMPTS = {
-    SimPreset.background_snow: "a portrait photo of the same person standing in a snowy mountain landscape, realistic",
-    SimPreset.background_beach: "a portrait photo of the same person on a sunny beach, realistic",
-    SimPreset.new_hairstyle: "a portrait photo of the same person with a different hairstyle, realistic",
-    SimPreset.vintage_style: "a vintage film photograph of the same person, 1970s style",
+    SimPreset.background_snow: (
+        "professional travel portrait of the same adult person, preserve their exact "
+        "facial identity, expression, and clothing, standing in a snowy mountain "
+        "landscape, natural daylight, realistic photography, sharp focus"
+    ),
+    SimPreset.background_beach: (
+        "professional travel portrait of the same adult person, preserve their exact "
+        "facial identity, expression, and clothing, on a sunny beach with the "
+        "shoreline in the distance, natural golden-hour light, realistic photography, "
+        "sharp focus"
+    ),
+    SimPreset.new_hairstyle: (
+        "portrait photograph of the same adult person, preserve their exact facial "
+        "identity, expression, and clothing, with a neat shoulder-length wavy "
+        "hairstyle, natural light, realistic photography, sharp focus"
+    ),
+    SimPreset.vintage_style: (
+        "portrait photograph of the same adult person, preserve their exact facial "
+        "identity, expression, and clothing, subtle 1970s color-film photography, "
+        "natural skin texture, sharp focus"
+    ),
 }
+SIM_NEGATIVE_PROMPT = (
+    "blurry, low resolution, jpeg artifacts, distorted face, asymmetrical eyes, "
+    "deformed features, extra face, plastic skin, oversaturated, cartoon, illustration, "
+    "text, watermark"
+)
 SIM_SEED = 1234
+SIM_STRENGTH = 0.45
+SIM_GUIDANCE_SCALE = 7.5
+SIM_INFERENCE_STEPS = 35
 
 
 @lru_cache(maxsize=1)
@@ -79,10 +104,11 @@ def process_simulation(
         generator = torch.Generator(device="cuda").manual_seed(SIM_SEED)
         result = pipeline(
             prompt=prompt,
+            negative_prompt=SIM_NEGATIVE_PROMPT,
             image=image,
-            strength=0.6,
-            guidance_scale=7.5,
-            num_inference_steps=25,
+            strength=SIM_STRENGTH,
+            guidance_scale=SIM_GUIDANCE_SCALE,
+            num_inference_steps=SIM_INFERENCE_STEPS,
             generator=generator,
         )
         edited = result.images[0].convert("RGB")

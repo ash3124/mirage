@@ -1,6 +1,26 @@
 __pycache__/
 *.py[cod]
 .venv/
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+.idea/
+
+# Local environment files; keep example templates trackable.
+.env
+.env.*
+!.env.example
+
+# Frontend build output and dependencies.
+node_modules/
+dist/
+
+# Model checkpoints should be downloaded at runtime, not committed.
+*.ckpt
+*.safetensors
+*.pth
+*.pt
 
 /demo-assets/*
 !/demo-assets/.gitkeep
