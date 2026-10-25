@@ -1,7 +1,8 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { BrowserRouter, NavLink } from 'react-router-dom';
 import { Moon, Sun } from 'lucide-react';
-import { getSettings, subscribeSettings } from './state/settings';
+import { api } from './api';
+import { getSettings, subscribeSettings, updateSettings } from './state/settings';
 import DemoBanner from './components/DemoBanner';
 import OfflineNotice from './components/OfflineNotice';
 import SettingsDrawer from './components/SettingsDrawer';
@@ -14,11 +15,48 @@ export default function App() {
     () => localStorage.getItem('mirage-theme') === 'dark',
   );
   const recordingMode = new URLSearchParams(window.location.search).get('record') === '1';
+  const forceRealBackend = new URLSearchParams(window.location.search).get('demo') === '0';
   const demoMode = settings.adapter === 'demo';
+  const [serverFallback, setServerFallback] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('mirage-theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
+
+  useEffect(() => {
+    if (settings.adapter !== 'real' || forceRealBackend || recordingMode) {
+      if (!demoMode) setServerFallback(false);
+      return;
+    }
+
+    let active = true;
+    const checkConnection = async () => {
+      try {
+        await api.health();
+        return;
+      } catch {
+        await new Promise((resolve) => window.setTimeout(resolve, 1000));
+      }
+
+      if (!active) return;
+      try {
+        await api.health();
+      } catch {
+        if (!active || getSettings().adapter !== 'real') return;
+        updateSettings({
+          ...getSettings(),
+          adapter: 'demo',
+          fallbackAdapter: 'real',
+        });
+        setServerFallback(true);
+      }
+    };
+
+    void checkConnection();
+    return () => {
+      active = false;
+    };
+  }, [demoMode, forceRealBackend, recordingMode, settings.adapter, settings.apiBaseUrl]);
 
   return (
     <BrowserRouter>
@@ -27,7 +65,7 @@ export default function App() {
           darkMode ? ' theme-dark' : ''
         }`}
       >
-        {demoMode && !recordingMode && <DemoBanner />}
+        {demoMode && !recordingMode && <DemoBanner serverFallback={serverFallback} />}
         <OfflineNotice />
         <header className="bg-navy text-misty">
           <nav className="mx-auto flex h-16 max-w-[1184px] items-center justify-between px-5 md:h-[76px] md:px-8">

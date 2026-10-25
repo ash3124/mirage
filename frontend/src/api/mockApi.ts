@@ -33,6 +33,47 @@ type MockJob =
   | { kind: 'sim'; startedAt: number; result: SimResult };
 
 const jobs = new Map<string, MockJob>();
+const mockAssets = {
+  original: new URL('../../../shared/examples/assets/original.png', import.meta.url).href,
+  cloaked: new URL('../../../shared/examples/assets/cloaked.png', import.meta.url).href,
+  heatmap: new URL('../../../shared/examples/assets/heatmap.png', import.meta.url).href,
+  simBackgroundSnowOriginal: new URL(
+    '../../../shared/examples/assets/sim_background_snow_original.png',
+    import.meta.url,
+  ).href,
+  simBackgroundSnowCloaked: new URL(
+    '../../../shared/examples/assets/sim_background_snow_cloaked.png',
+    import.meta.url,
+  ).href,
+  simBackgroundBeachOriginal: new URL(
+    '../../../shared/examples/assets/sim_background_beach_original.png',
+    import.meta.url,
+  ).href,
+  simBackgroundBeachCloaked: new URL(
+    '../../../shared/examples/assets/sim_background_beach_cloaked.png',
+    import.meta.url,
+  ).href,
+  simNewHairstyleOriginal: new URL(
+    '../../../shared/examples/assets/sim_new_hairstyle_original.png',
+    import.meta.url,
+  ).href,
+  simNewHairstyleCloaked: new URL(
+    '../../../shared/examples/assets/sim_new_hairstyle_cloaked.png',
+    import.meta.url,
+  ).href,
+  simVintageStyleOriginal: new URL(
+    '../../../shared/examples/assets/sim_vintage_style_original.png',
+    import.meta.url,
+  ).href,
+  simVintageStyleCloaked: new URL(
+    '../../../shared/examples/assets/sim_vintage_style_cloaked.png',
+    import.meta.url,
+  ).href,
+  certificate: new URL(
+    '../../../shared/examples/assets/sample_certificate.pdf',
+    import.meta.url,
+  ).href,
+};
 
 function newJobId(): string {
   return crypto.randomUUID();
@@ -81,7 +122,12 @@ function buildCloakJob(jobId: string, elapsed: number): Job<CloakResult> {
       type: 'cloak',
       status: 'done',
       stage: 'done',
-      result: cloakDoneExample.result,
+      result: {
+        ...cloakDoneExample.result,
+        original_url: mockAssets.original,
+        cloaked_url: mockAssets.cloaked,
+        heatmap_url: mockAssets.heatmap,
+      },
       error: null,
     } satisfies Job<CloakResult>;
   }
@@ -131,11 +177,17 @@ function buildSimJob(
 function simResultFor(preset: SimPreset): SimResult {
   const sample = manifestExample.samples[0];
   const result = sample.sims[preset];
-  const fileId = cloakDoneExample.result.file_id;
+  const simAssets: Record<SimPreset, [string, string]> = {
+    background_snow: [mockAssets.simBackgroundSnowOriginal, mockAssets.simBackgroundSnowCloaked],
+    background_beach: [mockAssets.simBackgroundBeachOriginal, mockAssets.simBackgroundBeachCloaked],
+    new_hairstyle: [mockAssets.simNewHairstyleOriginal, mockAssets.simNewHairstyleCloaked],
+    vintage_style: [mockAssets.simVintageStyleOriginal, mockAssets.simVintageStyleCloaked],
+  };
+  const [editOnOriginal, editOnCloaked] = simAssets[preset];
   return {
     preset,
-    edit_on_original_url: `/api/v1/files/${fileId}/sim_${preset}_original.png`,
-    edit_on_cloaked_url: `/api/v1/files/${fileId}/sim_${preset}_cloaked.png`,
+    edit_on_original_url: editOnOriginal,
+    edit_on_cloaked_url: editOnCloaked,
     disruption_score: result.disruption_score,
     seed: result.seed,
   };
@@ -255,7 +307,7 @@ export const mockApi: Api = {
         409,
       );
     }
-    const response = await fetch(manifestExample.sample_certificate_url);
+    const response = await fetch(mockAssets.certificate);
     if (!response.ok) {
       throw new ApiError('INTERNAL', 'The sample certificate could not be loaded.');
     }

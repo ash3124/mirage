@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type DragEvent, type FormEvent } from 'rea
 import { Link } from 'react-router-dom';
 import { api, getAdapter } from '../api';
 import { friendlyErrorMessage } from '../api/errorMessages';
+import { links } from '../data/links';
 import type {
   AppConfig,
   CloakForm,
@@ -252,7 +253,9 @@ export default function Studio() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const hasInput = adapter === 'demo' ? selectedDemoSampleId !== null : file !== null;
+    const hasInput = adapter === 'demo'
+      ? selectedDemoSampleId !== null || file !== null
+      : file !== null;
     if (!config || !hasInput || !consent || submitting) return;
     if (embedWatermark && !ownerTagPattern.test(ownerTag)) {
       setSubmitError('Enter an ownership tag with 1 to 4 letters A-Z or numbers 0-9.');
@@ -292,7 +295,9 @@ export default function Studio() {
   const canSubmit =
     config !== null &&
     config.strengths.length > 0 &&
-    (adapter === 'demo' ? selectedDemoSampleId !== null : file !== null) &&
+    (adapter === 'demo'
+      ? selectedDemoSampleId !== null || file !== null
+      : file !== null) &&
     consent &&
     !submitting &&
     (!embedWatermark || ownerTagPattern.test(ownerTag));
@@ -361,14 +366,32 @@ export default function Studio() {
             )}
             {selectedDemoSampleId && (
               <p className="mt-3 text-sm text-muted">
-                Choose a sample to play its pre-computed result. Any photo selected below stays
-                in your browser and is not uploaded or processed in Demo Mode.
+                This sample plays pre-computed results. To protect your own photo, use the{' '}
+                {links.colab ? (
+                  <a className="text-link" href={links.colab} rel="noreferrer" target="_blank">
+                    Colab notebook
+                  </a>
+                ) : (
+                  'Colab notebook'
+                )}.
               </p>
             )}
-            {!selectedDemoSampleId && !demoSamplesLoading && !demoSamplesError && (
+            {file && (
               <p className="mt-3 text-sm text-muted">
-                Select a pre-computed sample to continue. A photo selected below is only previewed
-                locally in Demo Mode.
+                Your upload stays in this browser and is not processed in Demo Mode. The result
+                will use a pre-computed sample. To protect your own photo, use the{' '}
+                {links.colab ? (
+                  <a className="text-link" href={links.colab} rel="noreferrer" target="_blank">
+                    Colab notebook
+                  </a>
+                ) : (
+                  'Colab notebook'
+                )}.
+              </p>
+            )}
+            {!selectedDemoSampleId && !file && !demoSamplesLoading && !demoSamplesError && (
+              <p className="mt-3 text-sm text-muted">
+                Select a sample or choose a photo to play a pre-computed result.
               </p>
             )}
           </div>
