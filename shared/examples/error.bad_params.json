@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "BAD_PARAMS",
+    "message": "One or more request fields are invalid."
+  }
+}

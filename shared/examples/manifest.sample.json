@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "sample_certificate_url": "/demo/sample_certificate.pdf",
+  "samples": [
+    {
+      "id": "sample-1",
+      "label": "Portrait 1",
+      "thumb_url": "/demo/sample-1/original.png",
+      "cloak": {
+        "file_id": "sample-1",
+        "original_url": "/demo/sample-1/original.png",
+        "cloaked_url": "/demo/sample-1/cloaked.png",
+        "heatmap_url": "/demo/sample-1/heatmap.png",
+        "metrics": {
+          "protection_score": 78,
+          "robustness": {
+            "jpeg_q75": 61,
+            "resize_50": 55,
+            "social_like": 52
+          },
+          "visual_quality": {
+            "psnr_db": 36.4,
+            "ssim": 0.96
+          },
+          "working_size": {
+            "w": 768,
+            "h": 512
+          },
+          "elapsed_s": 24.1
+        },
+        "metadata_report": {
+          "had_gps": true,
+          "removed": [
+            "GPS location",
+            "Camera model",
+            "Capture date"
+          ]
+        },
+        "hashes": {
+          "sha256_cloaked": "3f2a9c1e5b7d4e8a9c217d4e5f6a8b903f2a9c1e5b7d4e8a9c217d4e5f6a8b90",
+          "phash_original": "d1c4b2a39e8f7061"
+        },
+        "watermark": null,
+        "face_found": true,
+        "expires_at": "2026-10-25T10:30:00Z"
+      },
+      "sims": {
+        "background_snow": {
+          "preset": "background_snow",
+          "edit_on_original_url": "/demo/sample-1/sim_background_snow_original.png",
+          "edit_on_cloaked_url": "/demo/sample-1/sim_background_snow_cloaked.png",
+          "disruption_score": 71,
+          "seed": 1234
+        },
+        "background_beach": {
+          "preset": "background_beach",
+          "edit_on_original_url": "/demo/sample-1/sim_background_beach_original.png",
+          "edit_on_cloaked_url": "/demo/sample-1/sim_background_beach_cloaked.png",
+          "disruption_score": 65,
+          "seed": 1234
+        },
+        "new_hairstyle": {
+          "preset": "new_hairstyle",
+          "edit_on_original_url": "/demo/sample-1/sim_new_hairstyle_original.png",
+          "edit_on_cloaked_url": "/demo/sample-1/sim_new_hairstyle_cloaked.png",
+          "disruption_score": 60,
+          "seed": 1234
+        },
+        "vintage_style": {
+          "preset": "vintage_style",
+          "edit_on_original_url": "/demo/sample-1/sim_vintage_style_original.png",
+          "edit_on_cloaked_url": "/demo/sample-1/sim_vintage_style_cloaked.png",
+          "disruption_score": 68,
+          "seed": 1234
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic>=2
+# Use Colab's preinstalled PyTorch build when available.
+torch
+diffusers
+transformers
+accelerate
+safetensors
+pillow
+numpy
+opencv-python-headless
+mediapipe
+scikit-image
+imagehash
+invisible-watermark
+reportlab

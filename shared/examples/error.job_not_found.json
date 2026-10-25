@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "JOB_NOT_FOUND",
+    "message": "That job or file could not be found."
+  }
+}

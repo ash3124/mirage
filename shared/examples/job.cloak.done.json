@@ -1,0 +1,46 @@
+{
+  "job_id": "7c1f0c52-6b0a-4c7e-9b53-3d1b9c2a0f11",
+  "type": "cloak",
+  "status": "done",
+  "progress": 100,
+  "stage": "done",
+  "result": {
+    "file_id": "a91d3f0e5b7c4d2e8f10a6b3c4d5e6f7",
+    "original_url": "/api/v1/files/a91d3f0e5b7c4d2e8f10a6b3c4d5e6f7/original.png",
+    "cloaked_url": "/api/v1/files/a91d3f0e5b7c4d2e8f10a6b3c4d5e6f7/cloaked.png",
+    "heatmap_url": "/api/v1/files/a91d3f0e5b7c4d2e8f10a6b3c4d5e6f7/heatmap.png",
+    "metrics": {
+      "protection_score": 78,
+      "robustness": {
+        "jpeg_q75": 61,
+        "resize_50": 55,
+        "social_like": 52
+      },
+      "visual_quality": {
+        "psnr_db": 36.4,
+        "ssim": 0.96
+      },
+      "working_size": {
+        "w": 768,
+        "h": 512
+      },
+      "elapsed_s": 24.1
+    },
+    "metadata_report": {
+      "had_gps": true,
+      "removed": [
+        "GPS location",
+        "Camera model",
+        "Capture date"
+      ]
+    },
+    "hashes": {
+      "sha256_cloaked": "3f2a9c1e5b7d4e8a9c217d4e5f6a8b903f2a9c1e5b7d4e8a9c217d4e5f6a8b90",
+      "phash_original": "d1c4b2a39e8f7061"
+    },
+    "watermark": null,
+    "face_found": true,
+    "expires_at": "2026-10-25T10:30:00Z"
+  },
+  "error": null
+}
