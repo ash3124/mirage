@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "INVALID_IMAGE",
+    "message": "That file does not look like a photo we can read."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "SIM_UNAVAILABLE",
+    "message": "The simulator is not available on this server."
+  }
+}

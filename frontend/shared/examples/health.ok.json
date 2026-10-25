@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "version": "1.0.0",
+  "mode": "gpu",
+  "queue_depth": 0,
+  "simulator_enabled": true
+}

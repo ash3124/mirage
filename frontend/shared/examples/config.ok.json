@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "mode": "gpu",
+  "simulator_enabled": true,
+  "features": {
+    "watermark": false,
+    "face_focus": true,
+    "robust_mode": true
+  },
+  "limits": {
+    "max_upload_mb": 10,
+    "ttl_seconds": 900,
+    "max_side_px": 768
+  },
+  "strengths": [
+    {
+      "id": "light",
+      "label": "Light",
+      "description": "Nearly invisible, lighter protection"
+    },
+    {
+      "id": "standard",
+      "label": "Standard",
+      "description": "Balanced. Recommended"
+    },
+    {
+      "id": "strong",
+      "label": "Strong",
+      "description": "Strongest protection, slight grain"
+    }
+  ],
+  "sim_presets": [
+    {
+      "id": "background_snow",
+      "label": "Snowy background"
+    },
+    {
+      "id": "background_beach",
+      "label": "Beach background"
+    },
+    {
+      "id": "new_hairstyle",
+      "label": "New hairstyle"
+    },
+    {
+      "id": "vintage_style",
+      "label": "Vintage style"
+    }
+  ]
+}

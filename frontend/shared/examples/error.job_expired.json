@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "JOB_EXPIRED",
+    "message": "That job has expired. Please upload your photo again."
+  }
+}

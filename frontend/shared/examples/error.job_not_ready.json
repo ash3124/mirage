@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "JOB_NOT_READY",
+    "message": "That job is not finished yet."
+  }
+}
